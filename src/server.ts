@@ -6,6 +6,7 @@ import { availableParallelism } from 'node:os';
 dotenv.config();
 
 const CLUSTER = process.env.CLUSTER
+const PORT = process.env.PORT || 3000;
 
 if (CLUSTER) {
     if (cluster.isPrimary) {
@@ -23,16 +24,12 @@ if (CLUSTER) {
     } else {
         const server = http.createServer(userRoutes);
 
-        const PORT = process.env.PORT || 3000;
-
         server.listen(PORT, () => {
             console.log(`Worker ${process.pid} is running on port ${PORT}`);
         });
     }
 } else {
     const server = http.createServer(userRoutes);
-
-    const PORT = process.env.PORT || 3000;
 
     server.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
